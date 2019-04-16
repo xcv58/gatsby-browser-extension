@@ -7,6 +7,17 @@
 // You can delete this file if you're not using it
 const fs = require('fs')
 const path = require('path')
+const cheerio = require('cheerio')
+const crypto = require('crypto');
+
+const SHA_ALGO = 'sha512'
+
+const getContentSecurityPolicy = (text) => {
+  const hash = crypto.createHash(SHA_ALGO);
+  hash.update(text)
+  const sha = hash.digest('base64')
+  return `'${SHA_ALGO}-${sha}'`
+}
 
 exports.onPostBuild = async ({ reporter }, pluginOptions) => {
   const activity = reporter.activityTimer(`Build manifest.json`)
@@ -14,9 +25,16 @@ exports.onPostBuild = async ({ reporter }, pluginOptions) => {
 
   const manifest = JSON.parse(fs.readFileSync('manifest.json'))
 
-  // TODO: generate content_security_policy for inline script, references:
-  // https://www.w3.org/TR/2015/CR-CSP2-20150721/#script-src-hash-usage
-  // https://report-uri.com/home/hash
+  // gatsby-chunk-mapping, gatsby-script-loader
+  const $ = cheerio.load(fs.readFileSync(path.join('public', 'index.html')))
+  const contentSecurityPolicies = ['gatsby-chunk-mapping', 'gatsby-script-loader'].map(id => {
+      const html = $(`#${id}`).html()
+      return getContentSecurityPolicy(html)
+    }
+  )
+  manifest.content_security_policy = manifest.content_security_policy.replace(
+    ';', ` ${contentSecurityPolicies.join(' ')};`
+  )
   //Write manifest
   fs.writeFileSync(
     path.join(`public`, `manifest.json`),

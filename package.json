@@ -19,6 +19,7 @@
     "react-helmet": "^5.2.0"
   },
   "devDependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "prettier": "^1.17.0"
   },
   "keywords": [

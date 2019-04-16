@@ -7,7 +7,7 @@
     "default_title": "Whereami?",
     "default_popup": "index.html"
   },
-  "content_security_policy": "script-src 'self' https://example.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' 'sha256-cZMzt3v2fCs+o383rhedyKyqnmrI2RE1wGYPyRBlzvk=' 'sha256-68uyOxTFZv/pQtaDCVAY3+jSgtPfN5rqe+3nyhd/12Y='; object-src 'self'",
   "description": "...",
   "manifest_version": 2,
   "name": "test",

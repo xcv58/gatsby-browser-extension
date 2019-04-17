@@ -18,13 +18,13 @@ exports.onPostBuild = async ({ reporter }, pluginOptions) => {
 
   const manifest = JSON.parse(fs.readFileSync('manifest.json'))
 
-  // gatsby-chunk-mapping, gatsby-script-loader
   const $ = cheerio.load(fs.readFileSync(path.join('public', 'index.html')))
-  const contentSecurityPolicies = ['gatsby-chunk-mapping', 'gatsby-script-loader'].map(id => {
-    const html = $(`#${id}`).html()
-    return getContentSecurityPolicy(html)
-  }
-  )
+  const scripts = []
+  $('script').each(function (_, element) {
+    const content = $(this).html()
+    scripts.push(content)
+  })
+  const contentSecurityPolicies = scripts.filter(x => x).map(getContentSecurityPolicy)
   manifest.content_security_policy = manifest.content_security_policy.replace(
     ';', ` ${contentSecurityPolicies.join(' ')};`
   )

@@ -71,8 +71,7 @@ exports.onCreateDevServer = ({ reporter }) => {
 
 exports.onPostBootstrap = ({ reporter }) => {
   const activity = reporter.activityTimer(`Setup .cache/socketIo.js`)
-  const { INIT_CWD } = process.env
-  const socketIoFile = path.join(INIT_CWD, '.cache/socketIo.js')
+  const socketIoFile = getFile('.cache/socketIo.js')
   const socketIoFileContent = fs.readFileSync(socketIoFile, 'utf8')
   fs.writeFileSync(socketIoFile, socketIoFileContent.replace('= io()', `= io('${BASE_URL}')`))
   activity.end()

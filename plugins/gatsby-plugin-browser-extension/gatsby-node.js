@@ -84,9 +84,7 @@ exports.onPostBuild = async ({ reporter }, pluginOptions) => {
   activity.end()
 }
 
-exports.onCreateWebpackConfig = ({
-  stage, getConfig, rules, loaders, actions, ...rest
-}) => {
+exports.onCreateWebpackConfig = ({ stage, getConfig, actions }) => {
   const config = getConfig()
   if (stage != 'develop') {
     return

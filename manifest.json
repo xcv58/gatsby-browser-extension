@@ -1,16 +1,16 @@
 {
+  "name": "example-gatsby-browser-extension",
+  "description": "This is an example extension of gatsby-browser-extension",
+  "manifest_version": 2,
   "background": {
     "scripts": [],
     "page": "index.html"
   },
   "browser_action": {
-    "default_title": "Whereami?",
+    "default_title": "Title when you hover the icon",
     "default_popup": "index.html"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-  "description": "...",
-  "manifest_version": 2,
-  "name": "test",
   "permissions": ["webNavigation"],
   "web_accessible_resources": ["*.css"],
   "version": "0.1"
